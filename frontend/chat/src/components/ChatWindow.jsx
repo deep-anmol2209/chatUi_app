@@ -64,26 +64,18 @@ export default function ChatWindow() {
     messages,
     setMessages,
     sendMessage,
-    businessWaId,
   } = useChatStore();
 
   const [loading, setLoading] = useState(false);
   const [input, setInput] = useState("");
   const messagesEndRef = useRef(null);
 
-
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   const handleSend = () => {
-console.log("hi");
-
-    const message= messages[0]
-    
     if (!input.trim()) return;
-   
-    
     sendMessage(import.meta.env.VITE_WA_ID, selectedChat.wa_id, input.trim());
     setInput("");
   };
@@ -107,11 +99,10 @@ console.log("hi");
   }
 
   return (
-    <div className="flex-1 pt-10 sm:pt-0 flex flex-col bg-chat bg-cover h-full relative overflow-hidden"
+    <div className="flex flex-col h-screen bg-chat bg-cover relative overflow-hidden">
+      
    
-    >
-     
-      <div className="flex items-center gap-4 px-5  py-4 border-b bg-white bg-opacity-70">
+      <div className="sticky top-0 z-20 flex items-center gap-4 px-5 py-4 mt-15 sm:mt-0 border-b bg-white bg-opacity-90 backdrop-blur-sm">
         <div className="w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center text-white font-semibold">
           {selectedChat.name.charAt(0)}
         </div>
@@ -121,28 +112,27 @@ console.log("hi");
         </div>
       </div>
 
-     
-      <div className="flex-1 overflow-y-auto px-4 py-6 space-y-2">
+
+      <div
+        className="overflow-y-auto px-4 py-6 space-y-2 flex-1"
+        style={{ height: "calc(100vh - 64px - 72px)" }} 
+      >
         {messages.length > 0 ? (
           messages.map((msg) => {
-            const fromMe = msg.from === import.meta.env.VITE_WA_ID
-            console.log(fromMe);
-            
+            const fromMe = msg.from === import.meta.env.VITE_WA_ID;
             return (
               <div
-              key={msg._id}
-              className={`flex ${fromMe ? "justify-end" : "justify-start"}`}
+                key={msg._id}
+                className={`flex ${fromMe ? "justify-end" : "justify-start"}`}
               >
-                 <div
-        className={`
-          rounded-lg px-4 py-2 max-w-[70%] relative shadow
-          ${
-            fromMe
-              ? "bg-green-50 text-right rounded-tr-none"
-              : "bg-white text-left rounded-tl-none"
-          }
-        `}
-      >
+                <div
+                  className={`
+                    rounded-lg px-4 py-2 max-w-[70%] shadow
+                    ${fromMe
+                      ? "bg-green-50 text-right rounded-tr-none"
+                      : "bg-white text-left rounded-tl-none"}
+                  `}
+                >
                   <div>{msg.message}</div>
                   <div className="flex items-center gap-1 mt-1 text-xs text-gray-400">
                     <span>{formatTime(msg.timestamp)}</span>
@@ -160,8 +150,8 @@ console.log("hi");
         <div ref={messagesEndRef} />
       </div>
 
-     
-      <div className="px-5 py-4 border-t bg-white bg-opacity-80 flex items-center gap-2">
+      {/* Input Bar */}
+      <div className="px-5 py-4 border-t bg-white flex items-center gap-2">
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
@@ -171,13 +161,14 @@ console.log("hi");
         />
         <button
           onClick={handleSend}
-          className="bg-green-500 hover:bg-green-600 cursor-pointer text-white rounded-full p-3 transition"
+          className="bg-green-500 hover:bg-green-600 text-white rounded-full p-3"
         >
           <svg viewBox="0 0 20 20" fill="currentColor" width="20">
             <path d="M2.93 17.067a2 2 0 002.516.247l13-9a2 2 0 00.007-3.316l-13-9A2 2 0 002.93 2.933L15.124 10 2.93 17.067z" />
           </svg>
         </button>
       </div>
+      
     </div>
   );
 }

@@ -12,7 +12,7 @@ function App() {
   return (
     <div className="relative h-screen flex">
 
-      <button
+      {/* <button
         className="absolute top-1 left-4 z-50 p-2  sm:hidden"
         aria-label="Open chat list"
         onClick={() => setIsSidebarOpen(true)}
@@ -23,7 +23,11 @@ function App() {
           <span className="block w-6 h-0.5 bg-gray-600"></span>
           <span className="block w-6 h-0.5 bg-gray-600"></span>
         </div>
-      </button>
+      </button> */}
+
+      <span  onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="inline-block absolute top-100 left-[-40px] sm:hidden z-50">
+        <img src="/icons8-sidebar-32.png" alt="Hamburger menu" className="w-20 h-20" />
+        </span>
 
 
       <div className={`${isSidebarOpen ? "" : "hidden"} fixed inset-0 z-30 bg-white bg-opacity-20 sm:hidden`} onClick={() => setIsSidebarOpen(false)} />
