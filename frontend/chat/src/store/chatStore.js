@@ -1,31 +1,28 @@
 import { create } from 'zustand';
-import axios from "axios"
-const apiUrl = import.meta.env.VITE_API_URL
+import axios from "axios";
+
+const apiUrl = import.meta.env.VITE_API_URL;
+
 export const useChatStore = create((set, get) => ({
   conversations: [],
   messages: [],
   selectedChat: null,
 
-
   fetchConversations: async () => {
     const res = await axios.get(`${apiUrl}/api/conversations`);
-    const data = await res.json();
-    set({ conversations: data });
+    set({ conversations: res.data });
   },
-
 
   selectChat: async (chat) => {
     set({ selectedChat: chat });
     const res = await axios.get(`${apiUrl}/api/chat/${chat.wa_id}/messages`);
-    const data = await res.json();
-    set({ messages: data.messages });
+    set({ messages: res.data.messages });
   },
-
 
   sendMessage: async (from, wa_id, text) => {
     const tempMsg = {
       _id: `temp-${Date.now()}`,
-      from: from,
+      from,
       wa_id,
       to: wa_id,
       message: text,
@@ -33,11 +30,8 @@ export const useChatStore = create((set, get) => ({
       status: 'sent',
       timestamp: new Date().toISOString()
     };
-    console.log("helo");
-
 
     set({ messages: [...get().messages, tempMsg] });
-
 
     set({
       conversations: get().conversations.map(convo =>
@@ -47,20 +41,16 @@ export const useChatStore = create((set, get) => ({
       )
     });
 
-
     try {
-      const res =
-        console.log(from);
-
-      console.log(tempMsg);
-
-      await axios.post(`${apiUrl}/api/chat/send`, {
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ from, wa_id, message: text })
+      const res = await axios.post(`${apiUrl}/api/chat/send`, {
+        from,
+        wa_id,
+        message: text
+      }, {
+        headers: { 'Content-Type': 'application/json' }
       });
-      console.log("hello", res);
-      const savedMsg = await res.json();
 
+      const savedMsg = res.data;
 
       set({
         messages: get().messages.map(msg =>
@@ -70,7 +60,6 @@ export const useChatStore = create((set, get) => ({
 
     } catch (err) {
       console.error('Failed to send message:', err);
-
     }
   }
 }));
