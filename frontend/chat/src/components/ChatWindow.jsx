@@ -102,7 +102,7 @@ export default function ChatWindow() {
     <div className="flex flex-col h-screen bg-chat bg-cover relative overflow-hidden">
       
    
-      <div className="sticky top-0 z-20 flex items-center gap-4 px-5 py-4 mt-15 sm:mt-0 border-b bg-white bg-opacity-90 backdrop-blur-sm">
+      <div className="sticky top-0 z-20 flex items-center gap-4 px-5 py-4 mt-20 sm:mt-0 border-b bg-white bg-opacity-90 backdrop-blur-sm">
         <div className="w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center text-white font-semibold">
           {selectedChat.name.charAt(0)}
         </div>
