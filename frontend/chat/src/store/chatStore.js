@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-
+import axios from "axios"
 const apiUrl = import.meta.env.VITE_API_URL
 export const useChatStore = create((set, get) => ({
   conversations: [],
@@ -8,7 +8,7 @@ export const useChatStore = create((set, get) => ({
 
 
   fetchConversations: async () => {
-    const res = await fetch(`${apiUrl}/api/conversations`);
+    const res = await axios.get(`${apiUrl}/api/conversations`);
     const data = await res.json();
     set({ conversations: data });
   },
@@ -16,7 +16,7 @@ export const useChatStore = create((set, get) => ({
 
   selectChat: async (chat) => {
     set({ selectedChat: chat });
-    const res = await fetch(`${apiUrl}/api/chat/${chat.wa_id}/messages`);
+    const res = await axios.get(`${apiUrl}/api/chat/${chat.wa_id}/messages`);
     const data = await res.json();
     set({ messages: data.messages });
   },
@@ -54,9 +54,7 @@ export const useChatStore = create((set, get) => ({
 
       console.log(tempMsg);
 
-      await fetch(`${apiUrl}/api/chat/send`, {
-
-        method: 'POST',
+      await axios.post(`${apiUrl}/api/chat/send`, {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ from, wa_id, message: text })
       });
