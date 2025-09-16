@@ -59,6 +59,7 @@ function formatTime(ts) {
 }
 
 export default function ChatWindow() {
+  const [loading, setLoading] = useState(false);
   const {
     selectedChat,
     messages,
@@ -66,7 +67,7 @@ export default function ChatWindow() {
     sendMessage,
   } = useChatStore();
 
-  const [loading, setLoading] = useState(false);
+  
   const [input, setInput] = useState("");
   const messagesEndRef = useRef(null);
 
@@ -102,7 +103,7 @@ export default function ChatWindow() {
     <div className="flex flex-col h-screen bg-chat bg-cover relative overflow-hidden">
       
    
-      <div className="sticky top-0 z-20 flex items-center gap-4 px-5 py-4 mt-20 sm:mt-0 border-b bg-white bg-opacity-90 backdrop-blur-sm">
+      <div className="sticky top-0 z-20 flex items-center gap-4 px-5 py-4 sm:mt-0 border-b bg-white bg-opacity-90 backdrop-blur-sm">
         <div className="w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center text-white font-semibold">
           {selectedChat.name.charAt(0)}
         </div>
@@ -123,7 +124,7 @@ export default function ChatWindow() {
             return (
               <div
                 key={msg._id}
-                className={`flex ${fromMe ? "justify-end" : "justify-start"}`}
+                className={`flex ${fromMe ? "justify-end" : "justify-start scroll-auto"}`}
               >
                 <div
                   className={`
